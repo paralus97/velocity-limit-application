@@ -26,8 +26,8 @@
   - tidy it up X 
   - introduce immutability where possible and where its best spring practice X
   - introduce appropriate annotations as per spring best practice. X
-  - Javadoc everything!! And general comment tidy up
-  - Consider refactoring TransactionAttempt and TransactionResponse as LoadAttempt and LoadResponse 
+  - Javadoc everything!! And general comment tidy up X
+  - Consider refactoring TransactionAttempt and TransactionResponse as LoadAttempt and LoadResponse  X
 
 - Have an endpoint for adding individual transaction entities with the expected acceptance or non-acceptance response
 
