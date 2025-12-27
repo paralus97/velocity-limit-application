@@ -19,10 +19,17 @@ public interface TransactionEntityRepository extends JpaRepository<TransactionEn
 
     /**
      * Return boolean value indicating if the transaction ID exists for a given user ID.
-     * @return
+     * @return True if the row was previously seen. Other-wise false.
      */
     boolean existsByIdAndCustomerId(Long id, Long customerId);
 
+    /**
+     * Count the number of unique and accepted transactions for a given customer.
+     * @param customerId The id of the customer.
+     * @param startTime The beginning of the time range to check.
+     * @param endTime The end of the time range to check.
+     * @return The count of TransactionEntities within the time interval.
+     */
     @Query(value = "SELECT COUNT(t) FROM TransactionEntity t WHERE t.customerId = :customerId " +
                    "AND t.accepted = true AND t.time >= :startTime AND t.time < :endTime")
     long countByCustomerInPeriod(
@@ -30,6 +37,13 @@ public interface TransactionEntityRepository extends JpaRepository<TransactionEn
             @Param("startTime") LocalDateTime startTime,
             @Param("endTime") LocalDateTime endTime);
 
+    /**
+     * Return a list of the amounts given in accepted TransactionEntities for a given customer and time interval.
+     * @param customerId The id of the customer.
+     * @param startTime The beginning of the time range to check.
+     * @param endTime The end of the time range to check.
+     * @return The list of transaction amounts within the time interval.
+     */
     @Query(value = "SELECT t.transactionAmount FROM TransactionEntity t WHERE t.customerId = :customerId " +
                    "AND t.accepted = true AND t.time >= :startTime AND t.time < :endTime")
     List<BigDecimal> getAcceptedAmountsForCustomerInPeriod(@Param("customerId") Long customerId,

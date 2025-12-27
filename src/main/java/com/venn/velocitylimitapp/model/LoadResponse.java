@@ -13,10 +13,19 @@ import lombok.Data;
 @Builder
 public class LoadResponse {
 
+    /**
+     * The id of the transaction received.
+     */
     @JsonProperty("id") private final String id;
 
+    /**
+     * The customer id associated with the transaction.
+     */
     @JsonProperty("customer_id") private final String customerId;
 
+    /**
+     * Whether the transaction made was valid/accepted.
+     */
     @JsonProperty("accepted") private final Boolean accepted;
 
 }

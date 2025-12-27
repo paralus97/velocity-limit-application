@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * This class will perform the heavy lifting of the application. It will be invoked per line read of the input file.
+ * This class performs the core logic of the Velocity limit application.
  */
 @Service
 public class VelocityLimitService {

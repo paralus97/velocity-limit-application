@@ -64,7 +64,6 @@ public class TransactionEntityRepositoryTest {
         repository.save(new TransactionEntity(2L, 100L, new BigDecimal("10.00"), now, true));
         repository.save(new TransactionEntity(3L, 100L, new BigDecimal("10.00"), now, false));
 
-
         long count = repository.countByCustomerInPeriod(
                 100L,
                 now.minusHours(1),
