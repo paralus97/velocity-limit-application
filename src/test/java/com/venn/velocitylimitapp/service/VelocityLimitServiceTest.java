@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -107,30 +108,18 @@ public class VelocityLimitServiceTest {
         assertFalse(response.get().getAccepted());
     }
 
-    // TODO: implement weekly test
+    // TODO: implement weekly test. Strategy, mock the first pass of getAcceptedAmountsForCustomerInPeriod for the
+    //       daily check, then mock the second pass to check the weekly condition
+//    @Test
 //    void testWeeklyAmountLimit() {
-//        transactionAttempt.setTransactionAmount("1000.00"); // Trying to load 1000
-//
-//        when(repository.existsByIdAndCustomerId(transactionAttempt.getId(), transactionAttempt.getCustomerId()))
+//        LoadAttempt.builder()
+//                .id(100L)
+//                .customerId(1L)
+//                .loadAmount("1000.00")
+//                .time("2000-01-01T00:00:00Z")
+//                .build();
+//        when(repository.existsByIdAndCustomerId(loadAttempt.getId(), loadAttempt.getCustomerId()))
 //                .thenReturn(false);
 //        when(repository.countByCustomerInPeriod(any(), any(), any())).thenReturn(0L);
-//
-//
-//        when(repository.countByCustomerInPeriod(eq(1L), any(),
-//                        eq(LocalDateTime.parse(transactionAttempt.getTime()).plusDays(1L))
-//                ).thenReturn(BigDecimal.ZERO));
-//        // Scenario where user loaded 4500 today. 4500 + 1000 > $5000 which exceeds daily limit
-//        when(repository.returnAcceptedAmountsForCustomerInPeriod(any(), any(), any()))
-//                .thenReturn(List.of(new BigDecimal("4500.00")));
-//
-//        Optional<LoadResponse> response = velocityLimitService.processTransactionAttempt(transactionAttempt);
-//
-//        assertTrue(response.isPresent());
-//        assertFalse(response.get().accepted());
-//
-//        Optional<LoadResponse> response = velocityLimitService.processTransactionAttempt(transactionAttempt);
-//
-//        assertTrue(response.isPresent());
-//        assertFalse(response.get().accepted());
 //    }
 }
