@@ -26,8 +26,8 @@ import java.util.Optional;
 public class VelocityLimitService {
 
     private static final long MAX_DAILY_TRANSACTIONS = 3;
-    private static final BigDecimal MAX_DAILY_VELOCITY_LIMIT = BigDecimal.valueOf(5000d);
-    private static final BigDecimal MAX_WEEKLY_VELOCITY_LIMIT = BigDecimal.valueOf(20000d);
+    private static final BigDecimal MAX_DAILY_VELOCITY_LIMIT = BigDecimal.valueOf(5000.0);
+    private static final BigDecimal MAX_WEEKLY_VELOCITY_LIMIT = BigDecimal.valueOf(20000.0);
     private static final Logger log = LoggerFactory.getLogger(VelocityLimitService.class);
 
     @Autowired
@@ -85,11 +85,10 @@ public class VelocityLimitService {
 
         // Check weekly 20000 limit not hit
         List<BigDecimal> transactionAmountsW = transactionEntityRepository.returnAcceptedAmountsForCustomerInPeriod(customerId, startOfWeek, transactionTime);
-        BigDecimal totalWeekly = transactionAmounts.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalWeekly = transactionAmountsW.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
         if (totalWeekly.add(transactionAmount).compareTo(MAX_WEEKLY_VELOCITY_LIMIT) > 0) {
             log.error("MAX WEEKLY VELOCITY LIMIT WAS HIT");
             acceptedTransaction = false;
-
         }
 
         // Create TransactionEntity
