@@ -35,11 +35,11 @@ public class InputFileController {
                     // To test input, I just read everything into a list and printed it to the response
                     results.add(line);
                     TransactionAttempt attempt = mapper.readValue(line, TransactionAttempt.class);
-                    System.out.println(attempt.toString());
+//                    System.out.println(attempt.toString());
                     velocityLimitService.processTransactionAttempt(attempt)
                             .ifPresent(response -> {
                                 try {
-                                    System.out.println(mapper.writeValueAsString(response) + "\n");
+//                                    System.out.println(mapper.writeValueAsString(response) + "\n");
                                 } catch (Exception e) { /* log error */ }
                             });
                 } catch (Exception e) { /* log skip malformed line */ }

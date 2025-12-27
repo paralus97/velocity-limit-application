@@ -3,6 +3,7 @@ package com.venn.velocitylimitapp.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 
@@ -18,7 +19,7 @@ public class TransactionAttempt {
     //       Jackson Deserializer to parse double?
     @JsonProperty("load_amount") private String transactionAmount;
 
-    @JsonProperty("time") private ZonedDateTime time;
+    @JsonProperty("time") private String time;
 
     public double getTransactionAmount() {
         return Double.parseDouble(transactionAmount.replace("$", ""));
