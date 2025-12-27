@@ -86,7 +86,7 @@ public class VelocityLimitService {
         // Check weekly 20000 limit not hit
         List<BigDecimal> transactionAmountsW = transactionEntityRepository.returnAcceptedAmountsForCustomerInPeriod(customerId, startOfWeek, transactionTime);
         BigDecimal totalWeekly = transactionAmounts.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
-        if (totalDaily.add(transactionAmount).compareTo(MAX_DAILY_VELOCITY_LIMIT) > 0) {
+        if (totalWeekly.add(transactionAmount).compareTo(MAX_WEEKLY_VELOCITY_LIMIT) > 0) {
             log.error("MAX WEEKLY VELOCITY LIMIT WAS HIT");
             acceptedTransaction = false;
 
