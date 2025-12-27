@@ -20,9 +20,6 @@ public class TransactionAttempt {
 
     @JsonProperty("customer_id") private Long customerId;
 
-    // TODO: Revisit this. it would be nice to be able to parse this as a double immeadiately. Its proving difficult
-    //       to parse it cleanly with it arriving as "$x.yz". For now, lean on getTransactionAmount. Could use a custom
-    //       Jackson Deserializer to parse double?
     @JsonProperty("load_amount") private String transactionAmount;
 
     @JsonProperty("time") private String time;

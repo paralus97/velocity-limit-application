@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 1. Hardcode the file paths
-FILE1="./assets/expected-output.txt"
+FILE1="./assets/Venn-Back-End-Output.txt"
 FILE2="output.txt"
 
 # 2. Check if both files exist before comparing
