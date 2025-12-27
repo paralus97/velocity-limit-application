@@ -9,4 +9,4 @@
 
 - An individual transaction attempt is read from the InputFileController
 - The InputFileController invokes the VelocityLimitService.processTransactionAttempt method
-- The processTransactionAttemptMethod checks if ID exists in database, does all other checks, creates TransactionAttempt object if necessary. Only TransactionAttempts need to be stored. Responses can be modeled but no need to store them. TransactionResponse object returned but not stored.
+- The processTransactionAttemptMethod checks if TransactionEntity ID exists in database, does all other checks, creates TransactionEntity object if necessary. Only TransactionAttempts need to be stored. Responses can be modeled but no need to store them. TransactionResponse object returned but not stored.

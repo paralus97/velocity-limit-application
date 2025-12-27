@@ -21,8 +21,7 @@ import java.util.stream.Stream;
 @RestController
 public class InputFileController {
 
-//    @Autowired
-//    VelocityLimitService velocityLimitService;
+    @Autowired VelocityLimitService velocityLimitService;
     private final ObjectMapper mapper = new ObjectMapper();
 
     @GetMapping(value = "/getoutputfromtestinput")
@@ -35,14 +34,14 @@ public class InputFileController {
                 try {
                     // To test input, I just read everything into a list and printed it to the response
                     results.add(line);
-                    TransactionAttempt request = mapper.readValue(line, TransactionAttempt.class);
-                    System.out.println("Request created");
-//                    velocityLimitService.processTransactionAttempt(request)
-//                            .ifPresent(response -> {
-//                                try {
-//                                    System.out.println(mapper.writeValueAsString(response));
-//                                } catch (Exception e) { /* log error */ }
-//                            });
+                    TransactionAttempt attempt = mapper.readValue(line, TransactionAttempt.class);
+                    System.out.println(attempt.toString());
+                    velocityLimitService.processTransactionAttempt(attempt)
+                            .ifPresent(response -> {
+                                try {
+                                    System.out.println(mapper.writeValueAsString(response) + "\n");
+                                } catch (Exception e) { /* log error */ }
+                            });
                 } catch (Exception e) { /* log skip malformed line */ }
             });
         }

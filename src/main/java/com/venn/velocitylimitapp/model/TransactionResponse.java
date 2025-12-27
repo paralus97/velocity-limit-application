@@ -6,8 +6,8 @@ import jakarta.persistence.Id;
 import lombok.Data;
 
 public record TransactionResponse(
-        @Id long id,
-        @JsonProperty("customer_id") String customerId,
-        boolean accepted
+        @Id Long id,
+        @JsonProperty("customer_id") Long customerId,
+        Boolean accepted
 ) {
 }
