@@ -1,8 +1,8 @@
 package com.venn.velocitylimitapp.service;
 
 import com.venn.velocitylimitapp.entity.TransactionEntity;
-import com.venn.velocitylimitapp.model.TransactionAttempt;
-import com.venn.velocitylimitapp.model.TransactionResponse;
+import com.venn.velocitylimitapp.model.LoadAttempt;
+import com.venn.velocitylimitapp.model.LoadResponse;
 import com.venn.velocitylimitapp.repository.TransactionEntityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,7 @@ public class VelocityLimitService {
     @Autowired
     TransactionEntityRepository transactionEntityRepository;
 
-    public Optional<TransactionResponse> processTransactionAttempt(TransactionAttempt attempt) {
+    public Optional<LoadResponse> processLoadAttempt(LoadAttempt attempt) {
         // If load ID already in database, ignore attempt, return empty optional. No response given.
         // Specification is if ID is seen twice for a user. Not just if seen twice.
         if (transactionEntityRepository.existsByIdAndCustomerId(attempt.getId(), attempt.getCustomerId())) {
@@ -75,7 +75,7 @@ public class VelocityLimitService {
                 .build()
         );
 
-        return Optional.of(new TransactionResponse(
+        return Optional.of(new LoadResponse(
                 attempt.getId().toString(),
                 attempt.getCustomerId().toString(),
                 acceptedTransaction

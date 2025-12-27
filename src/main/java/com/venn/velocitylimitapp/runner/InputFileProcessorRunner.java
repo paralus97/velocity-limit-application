@@ -1,8 +1,7 @@
 package com.venn.velocitylimitapp.runner;
 
-import com.venn.velocitylimitapp.VelocityLimitApplication;
-import com.venn.velocitylimitapp.model.TransactionAttempt;
-import com.venn.velocitylimitapp.model.TransactionResponse;
+import com.venn.velocitylimitapp.model.LoadAttempt;
+import com.venn.velocitylimitapp.model.LoadResponse;
 import com.venn.velocitylimitapp.service.VelocityLimitService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,8 +47,8 @@ public class InputFileProcessorRunner implements CommandLineRunner {
                 if (line.trim().isEmpty()) continue;
 
                 try {
-                    TransactionAttempt attempt = mapper.readValue(line, TransactionAttempt.class);
-                    Optional<TransactionResponse> response = velocityLimitService.processTransactionAttempt(
+                    LoadAttempt attempt = mapper.readValue(line, LoadAttempt.class);
+                    Optional<LoadResponse> response = velocityLimitService.processLoadAttempt(
                             attempt
                     );
 

@@ -1,7 +1,7 @@
 package com.venn.velocitylimitapp.service;
 
-import com.venn.velocitylimitapp.model.TransactionAttempt;
-import com.venn.velocitylimitapp.model.TransactionResponse;
+import com.venn.velocitylimitapp.model.LoadAttempt;
+import com.venn.velocitylimitapp.model.LoadResponse;
 import com.venn.velocitylimitapp.repository.TransactionEntityRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,15 +28,15 @@ public class VelocityLimitServiceTest {
     @InjectMocks
     private VelocityLimitService velocityLimitService;
 
-    private TransactionAttempt transactionAttempt;
+    private LoadAttempt loadAttempt;
 
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
-        transactionAttempt = TransactionAttempt.builder()
+        loadAttempt = LoadAttempt.builder()
                 .id(100L)
                 .customerId(1L)
-                .transactionAmount("$500.50")
+                .loadAmount("$500.50")
                 .time("2000-01-01T00:00:00Z")
                 .build();
     }
@@ -47,19 +47,19 @@ public class VelocityLimitServiceTest {
     @Test
     void testDuplicateTransactionIdPerCustomer() {
         // This mockito sets up a situation where we pretend there is already an entry in the database for ta1
-        when(repository.existsByIdAndCustomerId(transactionAttempt.getId(), transactionAttempt.getCustomerId())).thenReturn(true);
-        Optional<TransactionResponse> resp = velocityLimitService.processTransactionAttempt(transactionAttempt);
+        when(repository.existsByIdAndCustomerId(loadAttempt.getId(), loadAttempt.getCustomerId())).thenReturn(true);
+        Optional<LoadResponse> resp = velocityLimitService.processLoadAttempt(loadAttempt);
         assertTrue(resp.isEmpty(), "Response should be empty for duplicate customer transaction IDs");
     }
 
     @Test
     void testValidTransactionAttempt() {
-        when(repository.existsByIdAndCustomerId(transactionAttempt.getId(), transactionAttempt.getCustomerId())).thenReturn(false);
+        when(repository.existsByIdAndCustomerId(loadAttempt.getId(), loadAttempt.getCustomerId())).thenReturn(false);
         // Mock DB returning 0 previous loads
         when(repository.countByCustomerInPeriod(any(), any(), any())).thenReturn(0L);
         when(repository.getAcceptedAmountsForCustomerInPeriod(any(), any(), any())).thenReturn(List.of());
 
-        Optional<TransactionResponse> response = velocityLimitService.processTransactionAttempt(transactionAttempt);
+        Optional<LoadResponse> response = velocityLimitService.processLoadAttempt(loadAttempt);
 
         assertTrue(response.isPresent(), "Valid transaction attempt should have a response");
         assertTrue(response.get().getAccepted(), "Valid transaction attempt should have accepted set to true");
@@ -77,7 +77,7 @@ public class VelocityLimitServiceTest {
     void testDailyCountLimit() {
         when(repository.existsById("100")).thenReturn(false);
         when(repository.countByCustomerInPeriod(any(), any(), any())).thenReturn(3L);
-        Optional<TransactionResponse> response = velocityLimitService.processTransactionAttempt(transactionAttempt);
+        Optional<LoadResponse> response = velocityLimitService.processLoadAttempt(loadAttempt);
         assertTrue(response.isPresent(), "Exceeding daily transaction count limit should get a response");
         assertFalse(response.get().getAccepted(), "Exceeding daily transaction count limit should have accepted set to false");
         // Check that the unacceptable transaction was saved
@@ -86,14 +86,14 @@ public class VelocityLimitServiceTest {
 
     @Test
     void testDailyAmountLimit() {
-        TransactionAttempt.builder()
+        LoadAttempt.builder()
                 .id(100L)
                 .customerId(1L)
-                .transactionAmount("1000.00")
+                .loadAmount("1000.00")
                 .time("2000-01-01T00:00:00Z")
                 .build();
 
-        when(repository.existsByIdAndCustomerId(transactionAttempt.getId(), transactionAttempt.getCustomerId()))
+        when(repository.existsByIdAndCustomerId(loadAttempt.getId(), loadAttempt.getCustomerId()))
                 .thenReturn(false);
         when(repository.countByCustomerInPeriod(any(), any(), any())).thenReturn(0L);
 
@@ -101,7 +101,7 @@ public class VelocityLimitServiceTest {
         when(repository.getAcceptedAmountsForCustomerInPeriod(any(), any(), any()))
                 .thenReturn(List.of(new BigDecimal("4500.00")));
 
-        Optional<TransactionResponse> response = velocityLimitService.processTransactionAttempt(transactionAttempt);
+        Optional<LoadResponse> response = velocityLimitService.processLoadAttempt(loadAttempt);
 
         assertTrue(response.isPresent());
         assertFalse(response.get().getAccepted());
@@ -123,12 +123,12 @@ public class VelocityLimitServiceTest {
 //        when(repository.returnAcceptedAmountsForCustomerInPeriod(any(), any(), any()))
 //                .thenReturn(List.of(new BigDecimal("4500.00")));
 //
-//        Optional<TransactionResponse> response = velocityLimitService.processTransactionAttempt(transactionAttempt);
+//        Optional<LoadResponse> response = velocityLimitService.processTransactionAttempt(transactionAttempt);
 //
 //        assertTrue(response.isPresent());
 //        assertFalse(response.get().accepted());
 //
-//        Optional<TransactionResponse> response = velocityLimitService.processTransactionAttempt(transactionAttempt);
+//        Optional<LoadResponse> response = velocityLimitService.processTransactionAttempt(transactionAttempt);
 //
 //        assertTrue(response.isPresent());
 //        assertFalse(response.get().accepted());

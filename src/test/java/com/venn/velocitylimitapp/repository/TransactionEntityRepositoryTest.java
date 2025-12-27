@@ -1,15 +1,10 @@
 package com.venn.velocitylimitapp.repository;
 
 import com.venn.velocitylimitapp.entity.TransactionEntity;
-import com.venn.velocitylimitapp.model.TransactionAttempt;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
 
 
 import java.math.BigDecimal;

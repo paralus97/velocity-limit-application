@@ -20,9 +20,9 @@ diff -q "$FILE1" "$FILE2" > /dev/null
 
 
 if [ $? -eq 0 ]; then
-    echo "Success: The files are identical."
+    echo "Success: The output file matches the example output."
     exit 0
 else
-    echo "Failure: The files are different."
+    echo "Failure: The output file does not match the example output."
     exit 1
 fi

@@ -23,11 +23,11 @@
   - test application basics, startup etc. X
 - Have a runner for outputting correct output text and nothing else. Use CommandLineRunner to run at startup X
 - Refactor core code
-  - tidy it up, remove block comments, spacing
-  - Inspect if usage of records for modeling is appropriate or not.
-  - introduce immutability where possible and where its best spring practice
-  - introduce appropriate annotations as per spring best practice.
-  - Javadoc!!
+  - tidy it up X 
+  - introduce immutability where possible and where its best spring practice X
+  - introduce appropriate annotations as per spring best practice. X
+  - Javadoc everything!! And general comment tidy up
+  - Consider refactoring TransactionAttempt and TransactionResponse as LoadAttempt and LoadResponse 
 
 - Have an endpoint for adding individual transaction entities with the expected acceptance or non-acceptance response
 
