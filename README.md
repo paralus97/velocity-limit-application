@@ -13,7 +13,7 @@ What follows are the velocity limits and rules for any given user in the system.
 Each load attempt will return a response in the following form
 ```json
 {
-  "id": "1234"
+  "id": "1234",
   "customer_id": "1234",
   "accepted": true
 }
@@ -39,6 +39,8 @@ To start up the Spring application, once dependencies are installed, use the fol
 `mvn spring-boot:run`
 
 This will have triggered the `InputFileProcessorRunner`. The function of this is to take the sample input given by Venn located in `assets/Venn-Back-End-Input.txt`, run it through the application's core logic and produce the expected output expected in `output.txt` (which should be in the root of the project now).
+
+To package the application as a jar file, you can run `mvn package` and run the application with `java -jar target/.velocitylimitapp-0.0.1-SNAPSHOT.jar`.
 
 ### Testing the Solution
 

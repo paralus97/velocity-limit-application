@@ -1,8 +1,6 @@
 package com.venn.velocitylimitapp.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -21,7 +19,8 @@ public class TransactionEntity {
     /**
      * The id of the transaction received.
      */
-    @Id private Long id;
+    @Id
+    private Long id;
 
     /**
      * The customer id associated with the transaction.

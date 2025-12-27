@@ -30,7 +30,3 @@
   - Consider refactoring TransactionAttempt and TransactionResponse as LoadAttempt and LoadResponse  X
 
 - Have an endpoint for adding individual transaction entities with the expected acceptance or non-acceptance response
-
-- create the option to encapsulate/run the application as a microservice with docker. 
-- also create the option to run the application as a jar.
-- create a README.md listing requirements, usage, architectural overview
