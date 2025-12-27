@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 @Entity
 @Data // is this needed?
@@ -19,9 +18,9 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TransactionEntity {
-    @Id Long id;
-    Long customerId;
-    BigDecimal transactionAmount;
-    LocalDateTime time;
-    boolean accepted;
+    @Id private Long id;
+    private Long customerId;
+    private BigDecimal transactionAmount;
+    private LocalDateTime time;
+    private boolean accepted;
 }

@@ -12,17 +12,16 @@ import java.time.ZonedDateTime;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class TransactionAttempt {
     //TODO: See about making these immutable
-    @JsonProperty("id") private Long id;
+    @JsonProperty("id") private final Long id;
 
-    @JsonProperty("customer_id") private Long customerId;
+    @JsonProperty("customer_id") private final Long customerId;
 
-    @JsonProperty("load_amount") private String transactionAmount;
+    @JsonProperty("load_amount") private final String transactionAmount;
 
-    @JsonProperty("time") private String time;
+    @JsonProperty("time") private final String time;
 
     public double getTransactionAmount() {
         return Double.parseDouble(transactionAmount.replace("$", ""));

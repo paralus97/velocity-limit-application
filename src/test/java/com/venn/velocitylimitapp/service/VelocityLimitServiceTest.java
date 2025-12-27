@@ -86,7 +86,12 @@ public class VelocityLimitServiceTest {
 
     @Test
     void testDailyAmountLimit() {
-        transactionAttempt.setTransactionAmount("$1000.00"); // Trying to load 1000
+        TransactionAttempt.builder()
+                .id(100L)
+                .customerId(1L)
+                .transactionAmount("1000.00")
+                .time("2000-01-01T00:00:00Z")
+                .build();
 
         when(repository.existsByIdAndCustomerId(transactionAttempt.getId(), transactionAttempt.getCustomerId()))
                 .thenReturn(false);
