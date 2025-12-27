@@ -62,8 +62,8 @@ public class VelocityLimitServiceTest {
         Optional<TransactionResponse> response = velocityLimitService.processTransactionAttempt(transactionAttempt);
 
         assertTrue(response.isPresent(), "Valid transaction attempt should have a response");
-        assertTrue(response.get().accepted(), "Valid transaction attempt should have accepted set to true");
-        assertEquals("100", response.get().id(), "Transaction response ID should match transaction attempt ID");
+        assertTrue(response.get().getAccepted(), "Valid transaction attempt should have accepted set to true");
+        assertEquals("100", response.get().getId(), "Transaction response ID should match transaction attempt ID");
 
         // Verify it was saved as accepted
         verify(repository).save(
@@ -79,7 +79,7 @@ public class VelocityLimitServiceTest {
         when(repository.countByCustomerInPeriod(any(), any(), any())).thenReturn(3L);
         Optional<TransactionResponse> response = velocityLimitService.processTransactionAttempt(transactionAttempt);
         assertTrue(response.isPresent(), "Exceeding daily transaction count limit should get a response");
-        assertFalse(response.get().accepted(), "Exceeding daily transaction count limit should have accepted set to false");
+        assertFalse(response.get().getAccepted(), "Exceeding daily transaction count limit should have accepted set to false");
         // Check that the unacceptable transaction was saved
         verify(repository).save(argThat(t -> !t.isAccepted()));
     }
@@ -104,7 +104,7 @@ public class VelocityLimitServiceTest {
         Optional<TransactionResponse> response = velocityLimitService.processTransactionAttempt(transactionAttempt);
 
         assertTrue(response.isPresent());
-        assertFalse(response.get().accepted());
+        assertFalse(response.get().getAccepted());
     }
 
     // TODO: implement weekly test

@@ -24,14 +24,16 @@ public interface TransactionEntityRepository extends JpaRepository<TransactionEn
     boolean existsByIdAndCustomerId(Long id, Long customerId);
 
     // Less than end time because new day starts 1 min after
-    @Query(value = "SELECT COUNT(t) FROM TransactionEntity t WHERE t.customerId = :customerId AND t.accepted = true AND t.time >= :startTime AND t.time < :endTime")
+    @Query(value = "SELECT COUNT(t) FROM TransactionEntity t WHERE t.customerId = :customerId " +
+                   "AND t.accepted = true AND t.time >= :startTime AND t.time < :endTime")
     long countByCustomerInPeriod(
             @Param("customerId") Long customerId,
             @Param("startTime") LocalDateTime startTime,
             @Param("endTime") LocalDateTime endTime);
 
     // Sum successful load amounts for a customer within a time range
-    @Query("SELECT t.transactionAmount FROM TransactionEntity t WHERE t.customerId = :customerId AND t.accepted = true AND t.time >= :startTime AND t.time < :endTime")
+    @Query(value = "SELECT t.transactionAmount FROM TransactionEntity t WHERE t.customerId = :customerId " +
+                   "AND t.accepted = true AND t.time >= :startTime AND t.time < :endTime")
     List<BigDecimal> getAcceptedAmountsForCustomerInPeriod(@Param("customerId") Long customerId,
                                                               @Param("startTime") LocalDateTime startTime,
                                                               @Param("endTime") LocalDateTime endTime);
