@@ -23,7 +23,7 @@ public class InputFileController {
 
 //    @Autowired
 //    VelocityLimitService velocityLimitService;
-//    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @GetMapping(value = "/getoutputfromtestinput")
     public List<String> getOutputFromTestInput() throws IOException {
@@ -35,7 +35,8 @@ public class InputFileController {
                 try {
                     // To test input, I just read everything into a list and printed it to the response
                     results.add(line);
-//                    TransactionAttempt request = mapper.readValue(line, TransactionAttempt.class);
+                    TransactionAttempt request = mapper.readValue(line, TransactionAttempt.class);
+                    System.out.println("Request created");
 //                    velocityLimitService.processTransactionAttempt(request)
 //                            .ifPresent(response -> {
 //                                try {
