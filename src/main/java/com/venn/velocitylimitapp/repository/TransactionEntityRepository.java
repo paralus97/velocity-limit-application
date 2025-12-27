@@ -32,7 +32,7 @@ public interface TransactionEntityRepository extends JpaRepository<TransactionEn
 
     // Sum successful load amounts for a customer within a time range
     @Query("SELECT t.transactionAmount FROM TransactionEntity t WHERE t.customerId = :customerId AND t.accepted = true AND t.time >= :startTime AND t.time < :endTime")
-    List<BigDecimal> returnAcceptedAmountsForCustomerInPeriod(@Param("customerId") Long customerId,
+    List<BigDecimal> getAcceptedAmountsForCustomerInPeriod(@Param("customerId") Long customerId,
                                                               @Param("startTime") LocalDateTime startTime,
                                                               @Param("endTime") LocalDateTime endTime);
 }

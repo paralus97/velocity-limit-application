@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
@@ -41,7 +40,6 @@ public class VelocityLimitService {
         //       seen in table as per requirements in doc. Perhaps make ID and
         //       customer ID a joint key in the database?
         if (transactionEntityRepository.existsByIdAndCustomerId(attempt.getId(), attempt.getCustomerId())) {
-            log.error("DETECTED DUPLICATE ID");
             //System.out.println("id = " + attempt.getId() + ", customerId = " + attempt.getCustomerId());
             return Optional.empty();
         }
@@ -74,7 +72,7 @@ public class VelocityLimitService {
         }
 
         // Check daily limit of 5000 not hit
-        List<BigDecimal> transactionAmounts = transactionEntityRepository.returnAcceptedAmountsForCustomerInPeriod(customerId, startOfDay, transactionTime);
+        List<BigDecimal> transactionAmounts = transactionEntityRepository.getAcceptedAmountsForCustomerInPeriod(customerId, startOfDay, transactionTime);
         BigDecimal totalDaily = transactionAmounts.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
         if (totalDaily.add(transactionAmount).compareTo(MAX_DAILY_VELOCITY_LIMIT) > 0) {
             log.error("MAX DAILY VELOCITY LIMIT WAS HIT");
@@ -84,7 +82,7 @@ public class VelocityLimitService {
 
 
         // Check weekly 20000 limit not hit
-        List<BigDecimal> transactionAmountsW = transactionEntityRepository.returnAcceptedAmountsForCustomerInPeriod(customerId, startOfWeek, transactionTime);
+        List<BigDecimal> transactionAmountsW = transactionEntityRepository.getAcceptedAmountsForCustomerInPeriod(customerId, startOfWeek, transactionTime);
         BigDecimal totalWeekly = transactionAmountsW.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
         if (totalWeekly.add(transactionAmount).compareTo(MAX_WEEKLY_VELOCITY_LIMIT) > 0) {
             log.error("MAX WEEKLY VELOCITY LIMIT WAS HIT");

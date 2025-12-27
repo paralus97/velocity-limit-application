@@ -18,8 +18,8 @@
 
 
 - thoroughly test the application build out suite to 
-  - test restrictions of velocity service
-  - test the sample venn input/output
+  - test restrictions of velocity service X
+  - test the sample venn input/output 
   - test application basics, startup etc.
 - Have a runner for outputting correct output text and nothing else. Use CommandLineRunner to run at startup
 - Have invoking the runner
