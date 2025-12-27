@@ -92,7 +92,6 @@ public class VelocityLimitService {
         }
 
         // Create TransactionEntity
-
         transactionEntityRepository.save(TransactionEntity.builder()
                 .id(attempt.getId())
                 .customerId(attempt.getCustomerId())
@@ -102,7 +101,10 @@ public class VelocityLimitService {
                 .build()
         );
 
-
-        return Optional.of(new TransactionResponse(attempt.getId(), attempt.getCustomerId(), acceptedTransaction));
+        return Optional.of(new TransactionResponse(
+                attempt.getId().toString(),
+                attempt.getCustomerId().toString(),
+                acceptedTransaction
+        ));
     }
 }
