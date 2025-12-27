@@ -18,7 +18,7 @@ import java.util.List;
 public interface TransactionEntityRepository extends JpaRepository<TransactionEntity, String> {
 
     /**
-     * Return boolean value indicating if the transaction ID exists
+     * Return boolean value indicating if the transaction ID exists for a given user ID.
      * @return
      */
     boolean existsByIdAndCustomerId(Long id, Long customerId);
@@ -35,11 +35,4 @@ public interface TransactionEntityRepository extends JpaRepository<TransactionEn
     List<BigDecimal> returnAcceptedAmountsForCustomerInPeriod(@Param("customerId") Long customerId,
                                                               @Param("startTime") LocalDateTime startTime,
                                                               @Param("endTime") LocalDateTime endTime);
-//
-//
-//
-//    long countByCustomerInPeriod(
-//            @Param("customerId") String customerId,
-//            @Param("startTime") OffsetDateTime startTime,
-//            @Param("endTime") OffsetDateTime endTime);
 }
