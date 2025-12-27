@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TransactionEntity {
-    @Id private Long id;
 
+    @Id private Long id;
 
     private Long customerId;
 

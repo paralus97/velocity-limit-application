@@ -10,7 +10,6 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class TransactionAttempt {
-    //TODO: See about making these immutable
     @JsonProperty("id") private final Long id;
 
     @JsonProperty("customer_id") private final Long customerId;

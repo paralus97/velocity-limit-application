@@ -33,59 +33,35 @@ public class VelocityLimitService {
     TransactionEntityRepository transactionEntityRepository;
 
     public Optional<TransactionResponse> processTransactionAttempt(TransactionAttempt attempt) {
-
         // If load ID already in database, ignore attempt, return empty optional. No response given.
         // Specification is if ID is seen twice for a user. Not just if seen twice.
-        // TODO: Enhance processing to account for ID seen per user and not just
-        //       seen in table as per requirements in doc. Perhaps make ID and
-        //       customer ID a joint key in the database?
         if (transactionEntityRepository.existsByIdAndCustomerId(attempt.getId(), attempt.getCustomerId())) {
-            //System.out.println("id = " + attempt.getId() + ", customerId = " + attempt.getCustomerId());
+            log.debug("id = " + attempt.getId() + ", customerId = " + attempt.getCustomerId());
             return Optional.empty();
         }
-        // If here, then dealing with unique transaction
-
+        // Assume valid attempt to begin with. Deserialize data
         boolean acceptedTransaction = true;
         BigDecimal transactionAmount = BigDecimal.valueOf(attempt.getTransactionAmount());
         LocalDateTime transactionTime = LocalDateTime.parse(attempt.getTime(), DateTimeFormatter.ISO_DATE_TIME);
         Long customerId = attempt.getCustomerId();
+        Long id = attempt.getId();
 
-        // Extract customer ID from TransactionAttempt. Use this ID to check load limits as follows:
-        //      - A maximum of $5,000 can be loaded per day
-        //      - A maximum of $20,000 can be loaded per week
-        //      - A maximum of 3 loads can be performed per day, regardless of amount
-
-        // Check load count for day of transaction
-
-        // Get the transaction
-        // note the date
-        // if this transaction is the 4th in the day, reject
-
-        //Start of day, based off of transaction time
-        LocalDateTime startOfDay = transactionTime.truncatedTo(ChronoUnit.DAYS);
-        LocalDateTime startOfWeek = transactionTime.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
-                .truncatedTo(ChronoUnit.DAYS);
-        long count = transactionEntityRepository.countByCustomerInPeriod(customerId, startOfDay, transactionTime);
-        if (count + 1 > MAX_DAILY_TRANSACTIONS) {
-            log.info("TOO MANY LOADS");
+        // Start of day, based off of transaction time
+        if (checkIfDailyTransactionLimitReached(customerId, transactionTime)) {
+            log.debug("Daily transaction limit exceeded by transactionId = {} for customerId = {}", id, customerId);
             acceptedTransaction = false;
         }
 
         // Check daily limit of 5000 not hit
-        List<BigDecimal> transactionAmounts = transactionEntityRepository.getAcceptedAmountsForCustomerInPeriod(customerId, startOfDay, transactionTime);
-        BigDecimal totalDaily = transactionAmounts.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
-        if (totalDaily.add(transactionAmount).compareTo(MAX_DAILY_VELOCITY_LIMIT) > 0) {
-            log.error("MAX DAILY VELOCITY LIMIT WAS HIT");
+        if (checkIfDailyVelocityLimitReached(customerId, transactionTime, transactionAmount)) {
+            log.debug("Daily velocity limit exceeded by transactionId = {} for customerId = {}", id, customerId);
             acceptedTransaction = false;
 
         }
 
-
         // Check weekly 20000 limit not hit
-        List<BigDecimal> transactionAmountsW = transactionEntityRepository.getAcceptedAmountsForCustomerInPeriod(customerId, startOfWeek, transactionTime);
-        BigDecimal totalWeekly = transactionAmountsW.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
-        if (totalWeekly.add(transactionAmount).compareTo(MAX_WEEKLY_VELOCITY_LIMIT) > 0) {
-            log.error("MAX WEEKLY VELOCITY LIMIT WAS HIT");
+        if (checkIfWeeklyVelocityLimitReached(customerId, transactionTime, transactionAmount)) {
+            log.debug("Weekly velocity limit exceeded by transactionId = {} for customerId = {}", id, customerId);
             acceptedTransaction = false;
         }
 
@@ -104,5 +80,26 @@ public class VelocityLimitService {
                 attempt.getCustomerId().toString(),
                 acceptedTransaction
         ));
+    }
+
+    private boolean checkIfDailyTransactionLimitReached(Long customerId, LocalDateTime transactionTime) {
+        LocalDateTime startOfDay = transactionTime.truncatedTo(ChronoUnit.DAYS);
+        long count = transactionEntityRepository.countByCustomerInPeriod(customerId, startOfDay, transactionTime);
+        return (count + 1 > MAX_DAILY_TRANSACTIONS);
+    }
+
+    private boolean checkIfDailyVelocityLimitReached(Long customerId, LocalDateTime transactionTime, BigDecimal transactionAmount) {
+        LocalDateTime startOfDay = transactionTime.truncatedTo(ChronoUnit.DAYS);
+        List<BigDecimal> transactionAmounts = transactionEntityRepository.getAcceptedAmountsForCustomerInPeriod(customerId, startOfDay, transactionTime);
+        BigDecimal totalDaily = transactionAmounts.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+        return (totalDaily.add(transactionAmount).compareTo(MAX_DAILY_VELOCITY_LIMIT) > 0);
+    }
+
+    private boolean checkIfWeeklyVelocityLimitReached(Long customerId, LocalDateTime transactionTime, BigDecimal transactionAmount) {
+        LocalDateTime startOfWeek = transactionTime.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
+                .truncatedTo(ChronoUnit.DAYS);
+        List<BigDecimal> transactionAmounts = transactionEntityRepository.getAcceptedAmountsForCustomerInPeriod(customerId, startOfWeek, transactionTime);
+        BigDecimal totalWeekly = transactionAmounts.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+        return (totalWeekly.add(transactionAmount).compareTo(MAX_WEEKLY_VELOCITY_LIMIT) > 0);
     }
 }

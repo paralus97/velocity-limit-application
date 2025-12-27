@@ -15,4 +15,5 @@ public class TransactionResponse {
     @JsonProperty("customer_id") private final String customerId;
 
     @JsonProperty("accepted") private final Boolean accepted;
+
 }

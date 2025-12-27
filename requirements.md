@@ -27,6 +27,7 @@
   - Inspect if usage of records for modeling is appropriate or not.
   - introduce immutability where possible and where its best spring practice
   - introduce appropriate annotations as per spring best practice.
+  - Javadoc!!
 
 - Have an endpoint for adding individual transaction entities with the expected acceptance or non-acceptance response
 
