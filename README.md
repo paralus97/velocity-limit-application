@@ -64,9 +64,9 @@ This is a Java 17 with Spring boot application structured in a conventional laye
 
 ```Plaintext
 velocity-limit-application/
-├── pom.xml 
-├── assets/
-│   ├── Venn-Back-End-Input.txt     
+├── pom.xml                                                             # Maven dependencies and configuration
+├── assets/                                                             # Given sample input and output files
+│   ├── Venn-Back-End-Input.txt                                 
 │   └── Venn-Back-End-Output.txt                             
 ├── src/
 │   ├── main/
@@ -76,29 +76,29 @@ velocity-limit-application/
 │   │   │           └── velocitylimitapp/
 │   │   │               ├── VelocityLimitApplication.java       
 │   │   │               │
-│   │   │               ├── entity/                    
-│   │   │               │   └── TransactionEntity.java        
+│   │   │               ├── entity/                                     
+│   │   │               │   └── TransactionEntity.java                  # Stores accepted and unaccepted load attempts             
 │   │   │               │
 │   │   │               ├── model/                      
-│   │   │               │   ├── LoadAttempt.java        
-│   │   │               │   └── LoadResponse.java       
+│   │   │               │   ├── LoadAttempt.java                        # DTO for load attempts
+│   │   │               │   └── LoadResponse.java                       # DTO for load responses
 │   │   │               │
 │   │   │               ├── repository/                 
-│   │   │               │   └── TransactionEntityRepository.java
+│   │   │               │   └── TransactionEntityRepository.java        # Data access layer for TransactionEntities in the db, helper functions for service layer
 │   │   │               │
 │   │   │               ├── service/                    
-│   │   │               │   └── VelocityLimitService.java 
+│   │   │               │   └── VelocityLimitService.java               # Implements core business logic of application, limit restrictions etc.
 │   │   │               │
 │   │   │               ├── controller/                    
-│   │   │               │   └── VelocitryTransactionController.java   
+│   │   │               │   └── VelocitryTransactionController.java     # For managing future REST endpoints for CRUD operations on TransactionEntities
 │   │   │               │ 
 │   │   │               └── runner/                   
-│   │   │                   └── InputFileProcessorRunner.java 
+│   │   │                   └── InputFileProcessorRunner.java           # Executes core business logic on startup using sample input, generates output.txt
 │   │   │
 │   │   └── resources/
-│   │       └── application.properties         
+│   │       └── application.properties                                  # Spring, db configuration
 │   │
-│   └── test/                                  
+│   └── test/                                                           # Unit testing
 │       └── java/
 │           └── com/
 │               └── venn/
