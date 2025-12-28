@@ -59,3 +59,50 @@ To verify the output of the application, there is a script in the root of the pr
 The output should read `Success: The output file matches the example output` if the application has functioned correctly.
 
 
+## Solution Architecture
+This is a Java 17 with Spring boot application structured in a conventional layered manner as Controller/Runner, Service, Repository, Model. It uses H2 in-memory database and Lombok to help with DTO (Data Transfer Object) modeling.
+
+```Plaintext
+velocity-limit-application/
+├── pom.xml 
+├── assets/
+│   ├── Venn-Back-End-Input.txt     
+│   └── Venn-Back-End-Output.txt                             
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── venn/
+│   │   │           └── velocitylimitapp/
+│   │   │               ├── VelocityLimitApplication.java       
+│   │   │               │
+│   │   │               ├── entity/                    
+│   │   │               │   └── TransactionEntity.java        
+│   │   │               │
+│   │   │               ├── model/                      
+│   │   │               │   ├── LoadAttempt.java        
+│   │   │               │   └── LoadResponse.java       
+│   │   │               │
+│   │   │               ├── repository/                 
+│   │   │               │   └── TransactionEntityRepository.java
+│   │   │               │
+│   │   │               ├── service/                    
+│   │   │               │   └── VelocityLimitService.java  
+│   │   │               │
+│   │   │               └── runner/                   
+│   │   │                   └── InputFileProcessorRunner.java 
+│   │   │
+│   │   └── resources/
+│   │       └── application.properties         
+│   │
+│   └── test/                                  
+│       └── java/
+│           └── com/
+│               └── venn/
+│                   └── velocitylimitapp/
+│                       ├── VelocityLimitApplicationTests.java
+|                       ├── repository/                     
+│                       │   └── TransactionEntityRepositoryTest.java       
+│                       ├── service/    
+                            └── VelocityLimitServiceTest.java 
+```
