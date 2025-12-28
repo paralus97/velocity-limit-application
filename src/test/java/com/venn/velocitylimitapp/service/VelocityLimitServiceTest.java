@@ -112,14 +112,26 @@ public class VelocityLimitServiceTest {
     //       daily check, then mock the second pass to check the weekly condition
 //    @Test
 //    void testWeeklyAmountLimit() {
-//        LoadAttempt.builder()
+//        loadAttempt = LoadAttempt.builder()
 //                .id(100L)
 //                .customerId(1L)
-//                .loadAmount("1000.00")
+//                .loadAmount("500.00")
 //                .time("2000-01-01T00:00:00Z")
 //                .build();
 //        when(repository.existsByIdAndCustomerId(loadAttempt.getId(), loadAttempt.getCustomerId()))
 //                .thenReturn(false);
-//        when(repository.countByCustomerInPeriod(any(), any(), any())).thenReturn(0L);
+//        when(repository.countByCustomerInPeriod(any(), any(), any()))
+//                .thenReturn(0L);
+//
+//        when(repository.getAcceptedAmountsForCustomerInPeriod(any(), any(), eq(loadAttempt.getTime().plusDays(1))))
+//                .thenReturn(List.of(BigDecimal.ZERO));
+//
+//        when(repository.getAcceptedAmountsForCustomerInPeriod(any(), any(), any()))
+//                .thenReturn(List.of(new BigDecimal("$20000.00")));
+//
+//        Optional<LoadResponse> response = velocityLimitService.processLoadAttempt(loadAttempt);
+//
+//        assertTrue(response.isPresent());
+//        assertFalse(response.get().getAccepted());
 //    }
 }
