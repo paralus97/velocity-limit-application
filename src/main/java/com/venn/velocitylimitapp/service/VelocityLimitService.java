@@ -36,7 +36,7 @@ public class VelocityLimitService {
         // If load ID already in database, ignore attempt, return empty optional. No response given.
         // Specification is if ID is seen twice for a user. Not just if seen twice.
         if (transactionEntityRepository.existsByIdAndCustomerId(attempt.getId(), attempt.getCustomerId())) {
-            log.debug("id = " + attempt.getId() + ", customerId = " + attempt.getCustomerId());
+            log.debug(attempt.toString());
             return Optional.empty();
         }
         // Assume valid attempt to begin with. Deserialize data

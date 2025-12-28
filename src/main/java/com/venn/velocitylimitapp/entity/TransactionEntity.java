@@ -17,7 +17,11 @@ import java.time.LocalDateTime;
 public class TransactionEntity {
 
     /**
-     * The id of the transaction received.
+     * The id of the transaction received from load attempt.
+     * NOTE: Because this id may not be completely unique, there is scope to use an embeddedId here
+     * made up of a combined key of the Transaction Attempt ID and the Customer ID. The combination
+     * of these two is treated as unique in the assignment specification. That, or the entity itself
+     * should have a unique generated ID. This would be a better model to ensure db integrity.
      */
     @Id
     private Long id;

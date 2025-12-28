@@ -21,8 +21,10 @@ public class VelocityTransactionController {
     @Autowired VelocityLimitService velocityLimitService;
     private final ObjectMapper mapper = new ObjectMapper();
 
-    // Currently not working due to generated ID annotation being missing from Load Attempt.
+    // Currently not working due to generated ID annotation being missing from TransactionEntity.
     // Would try fix it if had more time.
+    // Fix it by having generated id for transaction entity? then transaction id (from TransactionAttempt), customer id
+    // or embedded id, composite key
     @PostMapping(value = "/create_load_attempt")
     public ResponseEntity<LoadResponse> getOutputFromTestInput(@RequestBody LoadAttempt loadAttempt) {
         Optional<LoadResponse> resp = velocityLimitService.processLoadAttempt(loadAttempt);
