@@ -107,5 +107,5 @@ velocity-limit-application/
 │                       ├── repository/                     
 │                       │   └── TransactionEntityRepositoryTest.java       
 │                       └── service/    
-                            └── VelocityLimitServiceTest.java 
+│                           └── VelocityLimitServiceTest.java 
 ```
